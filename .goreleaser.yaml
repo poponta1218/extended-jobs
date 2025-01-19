@@ -1,0 +1,39 @@
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj:
+
+version: 2
+
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod tidy
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    main: .
+    binary: ejobs
+    goos:
+      - linux
+    goarch:
+      - amd64
+
+archives:
+  - format: binary
+    name_template: "{{ .Binary }}-v{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+release:
+  footer: >-
+
+    ---
+
+    Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
